@@ -48,10 +48,10 @@ class AuthController extends Controller
         // Redirection en fonction du rôle
         switch ($user->role) {
             case 'gp':
-                return redirect()->route('login')->with('success', 'User created successfully.');
+                return redirect()->route('dashboard.gp')->with('success', 'User created successfully.');
             case 'user':
             default:
-                return redirect()->route('login')->with('success', 'User created successfully.');
+                return redirect()->route('index')->with('success', 'User created successfully.');
         }
     }
      public function showLoginForm()
@@ -74,11 +74,13 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            //dd(Auth::user()->role);
 
             // Redirection en fonction du rôle
             switch (Auth::user()->role) {
                 case 'gp':
-                    return redirect()->route('dashboard.gp');
+                //dd(Auth::user());
+                    return to_route('dashboard.gp');
                 case 'user':
                 default:
                     return redirect()->route('index');

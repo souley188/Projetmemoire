@@ -47,4 +47,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function user_gp()
+    {
+        return $this->hasOne(UserGp::class);
+    }
 }

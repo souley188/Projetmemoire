@@ -11,17 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('commandes', function (Blueprint $table) {
+        Schema::create('contact_gps', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('gp_id');
-            $table->unsignedBigInteger('user_id');
-           
-            $table->float('poids_colis');
-            $table->boolean('paiement_especes');
-            $table->enum('etat',['en_attente','en_expedition','livrer','annuler'])->default('en_attente');
+            $table->unsignedBigInteger("user_id");
+            $table->string('nom');
+            $table->string('adresse');
+            $table->string('telephone');
             $table->timestamps();
-
-            $table->foreign('gp_id')->references('id')->on('gps');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('commandes');
+        Schema::dropIfExists('contact_gps');
     }
 };

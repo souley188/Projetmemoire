@@ -20,20 +20,16 @@
   <body>
     <div class="grid-container">
 
-      <!-- Header -->
-      @include('pages.GP.headergp')
-      <!-- End Header -->
+      @include('pages.GP.header')
 
       <!-- Sidebar -->
-     @include('pages.GP.sidebargp')
+      @include('pages.GP.sidebar')
       <!-- End Sidebar -->
-      <main>
-        @yield('contents')
+    <main>
+        @yield('content')
     </main>
       <!-- Main -->
-      
-      <!-- End Main -->
-
+     
     </div>
 
     <!-- Scripts -->

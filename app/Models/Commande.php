@@ -7,25 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Commande extends Model
 {
+   
+
     use HasFactory;
-    protected $fillable =[
-        'users_id',
+
+    protected $fillable = [
         'gp_id',
-        'colis_id',
-        'code',
-        'expediteur_nom',
-        'expediteur_prenom',
-        'expediteur_email',
-        'expediteur_telephone',
-        'destinataire_nom',
-        'destinataire_prenom',
-        'destinataire_email',
-        'destinataire_telephone',
+        'user_id',
         'poids_colis',
-        'paiement_especes'
-
-
+        'paiement_especes',
+        'etat'
     ];
+
+   
+
 
 public function user()
     {

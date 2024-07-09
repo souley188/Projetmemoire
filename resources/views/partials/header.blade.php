@@ -9,22 +9,51 @@
                 <span> <a href="/">SamaGP</a></span>
             </div>
             <ul class="nav-links">
-                <li ><a href="{{ route('toutcommandeUser') }}" class="{{ request()->routeIs('toutcommandeUser') ? 'toutcommandeUser' : '' }}" >Suivre un colis</a></li>
+                <li ><a href="{{route('toutcommandeUser')}}" class="{{ request()->routeIs('toutcommandeUser') ? 'active-link' : '' }}" >Suivre un colis</a></li>
                 <li><a href="{{ route('reclamation') }}" class="{{ request()->routeIs('reclamation') ? 'active-link' : '' }}">Réclamation</a></li>
                 <li><a href="{{ route('cherchez-gp') }}" class="{{ request()->routeIs('cherchez-gp') ? 'active-link' : '' }}">Chercher un GP</a></li>
             </ul>
             <div class="dropdown">
-        <button class="dropbtn">
-          <img src= {{"assets/images/téléchargement.png"}} >  @auth  
-          {{auth()->user()->prenom}}
-          @endauth
-        </button>
-    <div class="dropdown-content">
-    <a href="#">Profile</a>
-    <a href="#">Mes Commandes</a>
-    <a href="login">Log Out</a>
-  </div>
-</div>
+                @auth 
+                    @if(auth()->user()->role == "user")
+                    <button class="dropbtn">
+                      <img src= {{asset("assets/images/téléchargement.png")}} >   
+                            {{auth()->user()->prenom}}
+                      
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="{{route('profile.show')}}">Profile</a>
+                        <a href="#">Mes Commandes</a>
+                        <a href="{{route('logout')}}">Log Out</a>
+                   </div>
+                   @elseif(auth()->user()->role == "gp")
+                   <button class="dropbtn">
+                      <img src= {{asset("assets/images/téléchargement.png")}} >   
+                            {{auth()->user()->prenom}}
+                      
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="{{route('profile.show')}}">Profile(GP)</a>
+                        <a href="{{route('dashboard.gp')}}">Tableau de bord</a>
+                        <a href="{{route('logout')}}">Log Out</a>
+                   </div>
+                   @else
+                    <button class="dropbtn">
+                      <img src= {{asset("assets/images/téléchargement.png")}} >   
+                            {{auth()->user()->prenom}}
+                      
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="{{route('profile.show')}}">Profile(Admin)</a>
+                        <a href="#">Tableau de bord</a>
+                        <a href="{{route('logout')}}">Log Out</a>
+                   </div>
+                   @endif
+                @endauth
+                @guest
+                    <button > <a href="{{route('login')}}"> Inscription / Connexion</a></button>
+                @endguest
+            </div>
            
         </nav>
 </header>

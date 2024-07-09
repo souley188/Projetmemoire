@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SamaGP - @yield('title')</title>
     <link rel="stylesheet" href="../css/app.css">
+   
     <style>
         /* Style pour la boîte d'alerte */
         .alert {

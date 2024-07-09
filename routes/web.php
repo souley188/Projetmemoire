@@ -3,6 +3,9 @@
 use App\Http\Controllers\GPcontroller;
 use App\Http\Controllers\VilleController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ColisController;
+use App\Http\Controllers\ReclamationController;
 
 Route::get('/', function () {
     return view('pages.index');
@@ -11,28 +14,25 @@ Route::get('/', function () {
 Route::get('/suivre-un-colis', function () {
     return view('pages.colis');
 })->name('colis');
-Route::get('/reclamation', function () {
-    return view('pages.reclamation');
-})->name('reclamation');
 
-Route::get('/cherchez-gp', function () {
+Route::get('/cherchez-gp', [GPController::class, 'gp_liste'])->name('cherchez-gp');
+
+/*Route::get('/reclamation', function () {
+    return view('pages.reclamation');
+})->name('reclamation');*/
+
+/*Route::get('/cherchez-gp', function () {
     return view('pages.cherchez-gp');
-})->name('cherchez-gp');
+})->name('cherchez-gp');*/
+
 Route::get('/espace-client', function () {
     return view('pages.espace-client');
 })->name('espace-client');
 
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ColisController;
-use App\Http\Controllers\ReclamationController;
 
-Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('register');
-Route::post('register', [AuthController::class, 'register'])->name('auth.register');
+
 
 // Routes nécessitant une authentification
 Route::middleware('auth')->group(function () {
@@ -50,35 +50,61 @@ Route::get('/admin', function () {
     return view('pages.admine.villes');
 })->name('villes');*/
 
-Route::post('ville',[VilleController::class,'store'])->name('ville.store');
-Route::get('ville',[VilleController::class,'index'])->name('villes');
-Route::delete('ville/{ville}',[VilleController::class,'destroy'])->name('delete.ville');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('ville/edit/{ville}',[VilleController::class,'edit'])->name('ville.edit');
-Route::put('ville/update/{ville}',[VilleController::class,'update'])->name('ville.update');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [AuthController::class, 'show'])->name('profile.show');
+    Route::put('/profile/update', [AuthController::class, 'update'])->name('profile.update');
+});
 
-Route::get('GP',[GPcontroller::class,'liste_gp'])->name('GP1');
-Route::get('cherchez-gp', [GPController::class, 'gp_liste'])->name('cherchez-gp');
-Route::get('gp/edit/{gp}',[GpController::class,'edit'])->name('gp.edit');
-Route::post('gp',[GPcontroller::class,'store'])->name('gp.store');
-Route::get('infosgp',[GPcontroller::class,'infosgp'])->name('infos.gp');
-Route::get('gpdashboard',[GPcontroller::class,'gpdashboard'])->name('dashboard.gp');
-Route::get('maingp',[GPcontroller::class,'gpmain'])->name('main.gp');
-Route::get('/gp/{id}', [GpController::class, 'show'])->name('info.gp');
-Route::get('coli', [ColisController::class, 'affichecolis'])->name('coli');
-Route::get('toutcommande', [ColisController::class, 'affichetout'])->name('toutcommande');
-Route::get('/changer-etat/{id}/{nouvel_etat}', [ColisController::class, 'changerEtat'])->name('changer.etat');
-Route::get('attentecommande', [ColisController::class, 'afficheattente'])->name('attentecommande');
-Route::get('livrercommande', [ColisController::class, 'affichelivrer'])->name('livrercommande');
-Route::get('annulercommande', [ColisController::class, 'afficheannuler'])->name('annulercommande');
-Route::get('toutcommandeUser', [ColisController::class, 'affichertoutUser'])->name('toutcommandeUser');
-Route::get('attentecommandeUser', [ColisController::class, 'afficherattenteUser'])->name('attentecommandeUser');
-Route::get('livrercommandeUser', [ColisController::class, 'afficherlivrerUser'])->name('livrercommandeUser');
-Route::get('annulercommandeUser', [ColisController::class, 'afficherannulerUser'])->name('annulercommandeUser');
-Route::get('/depot/create', [ColisController::class, 'create'])->name('depot.create');
-Route::post('/depot/store', [ColisController::class, 'store'])->name('depot.store');
-Route::get('showcolis', [ColisController::class, 'showcolis'])->name('showcolis');
-Route::get('/reclamation', [ColisController::class, 'afficheReclamation'])->name('reclamation');
+Route::get('/users/create', [AuthController::class, 'create'])->name('users.create');
+Route::post('/users', [AuthController::class, 'store'])->name('users.store');
 
-Route::post('reclamation',[Reclamationcontroller::class,'store'])->name('reclamation.store');
-Route::post('/depotcolis', [ColisController::class, 'store'])->name('depotcolis.store');
+Route::get('/reclamation', [ColisController::class, 'afficheReclamation'])->name('reclamation')->middleware('auth');
+ Route::get('commandegp',[GPcontroller::class,'commandegp'])->name('commande.gp');
+ Route::post('commandegpstore',[GPcontroller::class,'commandestore'])->name('commandestore.gp');
+
+
+Route::post('reclamation',[Reclamationcontroller::class,'store'])->name('reclamation.store'); 
+Route::get('affichecolis',[Coliscontroller::class,'affichecolis'])->name('affichecolis.store'); 
+Route::get('affichetout',[Coliscontroller::class,'affichetout'])->middleware('auth')->name('affichetout.store'); 
+Route::get('/commandes', [Coliscontroller::class, 'toutcommande'])->middleware('auth')->name('toutcommande');
+Route::get('/commandes/attente', [Coliscontroller::class, 'attentecommande'])->middleware('auth')->name('attentecommande');
+Route::get('/commandes/changeretat/{id}/{nouvel_etat}', [ColisController::class, 'changerEtat'])->name('changer.etat');
+Route::get('/commandes/livrer', [Coliscontroller::class, 'livrercommande'])->middleware('auth')->name('livrercommande');
+Route::get('/commandes/annuler', [Coliscontroller::class, 'annulercommande'])->middleware('auth')->name('annulercommande');
+Route::get('/commandes/attenteUser', [Coliscontroller::class, 'attentecommandeUser'])->middleware('auth')->name('attentecommandeUser');
+Route::get('/commandes/toutcommandeUser', [Coliscontroller::class, 'toutcommandeUser'])->middleware('auth')->name('toutcommandeUser');
+Route::get('/commandes/livrercommandeUser', [Coliscontroller::class, 'livrercommandeUser'])->middleware('auth')->name('livrercommandeUser');
+Route::get('/commandes/annulercommandeUser', [Coliscontroller::class, 'annulercommandeUser'])->middleware('auth')->name('annulercommandeUser');
+Route::get('/gp/{id}',[ GPController::class, 'shows'])->name('commande.gp.detail');
+Route::get('/reclamations/{id}', [ReclamationController::class,'show'])->name('reclamation.show');
+Route::get('/reclamations', [ReclamationController::class, 'index'])->name('reclamations.index');
+
+
+Route::prefix('gp')->group(function(){
+   
+
+
+    Route::get('liste/infos', [GPController::class, 'infosgp'])
+        ->middleware('auth')->name('dashboard.gp');
+
+    Route::get('liste/contactgp', [GPController::class, 'contactgp'])->middleware('auth')->name('contactgp.gp');
+    Route::post('liste/contactgp', [GPController::class, 'contactstore'])->middleware('auth')->name('contactstore.gp');
+    Route::get('liste/annoncegp', [GPController::class, 'annoncegp'])->middleware('auth')->name('annonce.gp');
+    Route::get('liste/villegp', [GPController::class, 'ville'])->middleware('auth')->name('ville.gp');
+    Route::post('gp',[GPController::class,'gpstore'])->name('gp.store');
+    Route::get('GP',[GPController::class,'liste_gp'])->name('GP1');
+
+    Route::post('liste/villegp', [GPController::class, 'villestore'])->middleware('auth')->name('villestore.gp');
+
+
+    Route::post('liste/infosgp', [GPController::class, 'store'])->middleware('auth')
+        ->name('contactgp.store');
+        
+
+
+    //Route::get('gpdashboard',[GPcontroller::class,'gpdashboard'])->name('dashboard.gp');
+});

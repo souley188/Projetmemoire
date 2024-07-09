@@ -16,7 +16,8 @@ class Gp extends Model
         'date_depart',
         'date_arrive',
         'user_id',
-         'satisfaction'
+        'contact_gp_id'
+        
     ];
 
     public function ville_depart()
@@ -28,8 +29,17 @@ class Gp extends Model
     {
         return $this->belongsTo(Ville::class);
     }
+    public function contact_gp()
+    {
+        return $this->belongsTo(ContactGp::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function commandes()
     {
         return $this->hasMany(Commande::class);
     }
+   
 }

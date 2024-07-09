@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class ContactGp extends Model
 {
     use HasFactory;
+    protected $fillable=[
+     'user_id',
+     'nom',
+     'adresse',
+     'telephone'
+
+    ];
 }

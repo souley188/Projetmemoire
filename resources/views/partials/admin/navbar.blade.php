@@ -17,36 +17,23 @@
                         <span class="title">Dashboard</span>
                     </a>
                 </li>
-
-               
-                
-                <li>
-                    <a href="{{ route('coli') }}">
-                        <span class="icon">
-                            <ion-icon name="help-utline"></ion-icon>
-                        </span>
-                        <span class="title">Gestion des colis</span>
-                    </a>
-                </li>
                
                 <li>
-                    <a href="{{ route('villes') }}">
+                    <a href="{{route('ville.gp')}}">
                         <span class="icon">
-                            <ion-icon name="help-utline"></ion-icon>
+                            <ion-icon name="help-utline"></ion-icon>Villes
                         </span>
-                        <span class="title">Villes</span>
+                        <span class="title"></span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{route('GP1')}}">
+                 <li>
+                    <a href="{{route('logout')}}">
                         <span class="icon">
-                            <ion-icon name="setting-outline"></ion-icon>
+                            <ion-icon name="help-utline"></ion-icon>Se Deconnecter
                         </span>
-                        <span class="title">Gestion_GP</span>
+                        <span class="title"></span>
                     </a>
                 </li>
-
-               
 
             </ul>
 </div>

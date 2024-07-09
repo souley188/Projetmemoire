@@ -17,4 +17,8 @@ class Reclamation extends Model
     {
         return $this->belongsTo(Commande::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
